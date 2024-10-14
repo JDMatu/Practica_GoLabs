@@ -9,8 +9,10 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
-
-
+@app.route('/routeYD')
+def test():
+    lblSaludo='<h1> Hi...! </h1>'
+    return lblSaludo
 
 
 
