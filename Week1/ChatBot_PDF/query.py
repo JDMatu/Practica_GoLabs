@@ -41,10 +41,10 @@ def main():
     timeout=None,
     max_retries=2,
 )
-    response_text = model.predict(prompt)
+    response_text = model.invoke(prompt)
 
     sources = [doc.metadata.get("source", None) for doc in results]
-    formatted_response = f"Response: {response_text}\nSources: {sources}"
+    formatted_response = f"Response: {response_text.content}\nSources: {sources}"
     print(formatted_response)
 
 

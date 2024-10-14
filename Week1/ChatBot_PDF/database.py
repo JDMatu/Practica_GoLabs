@@ -13,7 +13,7 @@ if "GOOGLE_API_KEY" not in os.environ:
     os.environ["GOOGLE_API_KEY"] = getpass.getpass("Enter your Google AI API key: ")
 
 CHROMA_PATH = "chroma"
-DATA_PATH = "Week1/ChatBot_PDF's/data"
+DATA_PATH = "data"
 
 def main():
     generate_data_store()
