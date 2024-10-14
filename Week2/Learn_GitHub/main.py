@@ -9,11 +9,9 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
-
-
-
-
-
+@app.route('/calle')
+def calle():
+    return '<h1> calle.com </h1>'
 
 
 
