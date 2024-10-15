@@ -13,6 +13,16 @@ def index():
 def calle():
     return '<h1> calle.com </h1>'
 
+@app.route('/hola')
+def hola():
+    return ("hola")
+
+
+
+
+
+
+
 
 
 
