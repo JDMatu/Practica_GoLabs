@@ -14,6 +14,10 @@ def test():
     lblSaludo='<h1> Hi...! </h1>'
     return lblSaludo
 
+@app.route('/hola')
+def hola():
+    return ("hola")
+
 
 
 
