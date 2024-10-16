@@ -1,24 +1,51 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Asistente de Cocina es una aplicación web que te ayudará a encontrar recetas de cocina de manera rápida y sencilla.">
+    <meta name="description" content="Asistente de Cocina que te ayudará a encontrar recetas según tus ingredientes.">
     <title>Asistente de Cocina</title>
     <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
 </head>
 <body>
-    
+    <h1>Asistente de Cocina</h1>
+    <p>Introduce los ingredientes que tienes disponibles:</p>
 
+    <form id="ingredientes-form">
+        <input type="text" id="ingredientes" name="ingredientes" placeholder="Ej: tomate, queso, albahaca">
+        <button type="submit">Buscar Recetas</button>
+    </form>
 
+    <div id="recetas-container"></div>
 
-    
+    <script>
+        document.getElementById('ingredientes-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            let ingredientes = document.getElementById('ingredientes').value.split(',');
 
+            fetch('/buscar_recetas', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ ingredientes: ingredientes })
+            })
+            .then(response => response.json())
+            .then(data => {
+                let container = document.getElementById('recetas-container');
+                container.innerHTML = ''; // Limpiar resultados anteriores
 
-
-
-
-
-    <script src="{{url_for('static', filename='js/funciones.js')}}"></script>
+                if (data.status === "success" && data.recetas.length > 0) {
+                    data.recetas.forEach(receta => {
+                        let recetaDiv = document.createElement('div');
+                        recetaDiv.innerHTML = `<pre>${receta}</pre>`;
+                        container.appendChild(recetaDiv);
+                    });
+                } else {
+                    container.innerHTML = '<p>No se encontraron recetas.</p>';
+                }
+            });
+        });
+    </script>
 </body>
 </html>
