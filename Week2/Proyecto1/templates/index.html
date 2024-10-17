@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Asistente de Cocina que te ayudará a encontrar recetas según tus ingredientes.">
+    <meta name="description" content="Asistente de Cocina que te ayudará a encontrar recetas según tus ingredientes o responder preguntas culinarias.">
     <title>Asistente de Cocina</title>
     <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
 </head>
@@ -18,10 +18,23 @@
 
     <div id="recetas-container"></div>
 
+    <hr>
+
+    <h2>¿Tienes alguna pregunta culinaria?</h2>
+    <p>Pregúntale algo sobre técnicas, sustituciones de ingredientes o cualquier otra duda:</p>
+
+    <form id="pregunta-form">
+        <input type="text" id="pregunta" name="pregunta" placeholder="Ej: ¿Qué puedo usar en lugar de tomate?">
+        <button type="submit">Preguntar</button>
+    </form>
+
+    <div id="respuesta-container"></div>
+
     <script>
+        // Manejar búsqueda de recetas por ingredientes
         document.getElementById('ingredientes-form').addEventListener('submit', function(event) {
             event.preventDefault();
-            let ingredientes = document.getElementById('ingredientes').value.split(',');
+            let ingredientes = document.getElementById('ingredientes').value.split(',').map(ing => ing.trim());
 
             fetch('/buscar_recetas', {
                 method: 'POST',
@@ -43,6 +56,31 @@
                     });
                 } else {
                     container.innerHTML = '<p>No se encontraron recetas.</p>';
+                }
+            });
+        });
+
+        // Manejar preguntas avanzadas
+        document.getElementById('pregunta-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            let pregunta = document.getElementById('pregunta').value;
+
+            fetch('/preguntar', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ pregunta: pregunta })
+            })
+            .then(response => response.json())
+            .then(data => {
+                let container = document.getElementById('respuesta-container');
+                container.innerHTML = ''; // Limpiar respuestas anteriores
+
+                if (data.status === "success") {
+                    container.innerHTML = `<pre>${data.respuesta}</pre>`;
+                } else {
+                    container.innerHTML = '<p>Hubo un error al procesar la pregunta.</p>';
                 }
             });
         });
