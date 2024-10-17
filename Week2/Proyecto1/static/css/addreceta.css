@@ -1,0 +1,240 @@
+/* Estilos generales */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Nunito', sans-serif;
+    font-size: 20px;
+}
+
+/* Establecer la imagen de fondo */
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    background-image: url('https://images.unsplash.com/photo-1643148636637-58b3eb95cdad?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3'); 
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+/* Estilo del navbar */
+.navbar {
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    background-color: rgba(255, 255, 255, 0.9); /* Fondo semi-transparente */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+    padding: 15px 30px;
+    display: flex;
+    justify-content: flex-end; /* Mueve elementos a los extremos */
+    align-items: center; /* Centra verticalmente los elementos */
+}
+
+.navbar .hogar i {
+    font-size: 30px;
+    color: green;
+    margin-left: auto;
+    margin-right: 30px;
+    padding: 10px; /* Espacio adicional alrededor del icono */
+    transition: all 0,3;
+}
+
+
+.navbar .hogar i:hover {
+    transform: scale(1.1); /* Efecto de zoom al pasar el ratón */
+    color: #b2ff92; /* Cambia el color al hacer hover */
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+.nav-links li {
+    display: inline;
+}
+
+.nav-links a {
+    text-decoration: none;
+    font-weight: bold;
+    color: black;
+}
+
+.nav-links a:hover {
+    color: #b2ff92; /* Color de hover */
+}
+
+
+.nav-links {
+    display: flex;
+    gap: 20px;
+    list-style-type: none;
+    justify-content: flex-end;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #3abd02;
+    font-weight: bold;
+    
+}
+
+.nav-links li:hover {
+    color: #b2ff92;
+    transform: scale(1.1);
+    
+}
+
+/* Estilo del contenedor principal */
+.container {
+    background-color: rgba(255, 255, 255, 0.8); /* Color blanco semi-transparente */
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+    margin-top: 100px; /* Espacio para el navbar */
+    width: 80%;
+}
+
+.search-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #dce0e4;
+    border-radius: 10px;
+    padding: 0.5rem;
+}
+
+#search {
+    width: 80%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #3abd02;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: transform 0.2s; /* Transición suave */
+}
+
+button:hover {
+    background-color: #49e007;
+    
+}
+
+/* recetas populares */
+.recetas-populares {
+    margin-top: 50px;
+    padding: 50px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 15px;
+    width: 80%;
+}
+
+.recetas-title {
+    text-align: center;
+    margin-bottom: 40px;
+    font-size: 32px;
+    color: #3abd02;
+    letter-spacing: 2px;
+}
+
+.recetas-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.recetas-text {
+    width: 45%;
+}
+/* aqui termina el navbar */
+
+/* aqui empieza el formulario */
+
+/* Estilo del formulario dentro de la sección .recetario */
+.recetario {
+    width: 500px;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: rgba(255, 255, 255, 0.9);
+    margin-top: 120px;
+}
+
+.recetario h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #3abd02;
+}
+
+.recetario .controls {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+.recetario .buttons {
+    background-color: #3abd02;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 16px;
+}
+
+.recetario .buttons:hover {
+    background-color: #49e007;
+}
+
+/* Alineación de los botones en una fila */
+.button-group {
+    display: flex;
+    justify-content: space-between; /* Espacio entre botones */
+    gap: 10px; /* Espacio entre los botones */
+}
+
+/* Botones */
+.buttons {
+    background-color: #3abd02;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    flex-grow: 1; /* Asegura que ambos botones tengan el mismo tamaño */
+}
+
+.buttons:hover {
+    background-color: #49e007;
+}
+
+/* Botón de modificar con estilo adicional si lo necesitas */
+.modify {
+    background-color: #ffc107; /* Color diferente para el botón de modificar */
+}
+
+.modify:hover {
+    background-color: #e0a800;
+}
+
+
+
