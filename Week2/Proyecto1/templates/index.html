@@ -8,54 +8,23 @@
 
     <section class="col-lg-6">
         <div class="container mt-5 ms-5">
-            <form action="d-flex row">
+            <form action="" id="ingredientes-form">
                 <label for="exampleSearch" class="form-label fs-3">Buscar X Ingredientes</label>
                 <div class="mb-3 d-flex gap-2">
-                    <input type="text" class="form-control w-50" id="exampleSearch" placeholder="Ejemplo: Pollo, Arroz, Leche">
+                    <input type="text" class="form-control w-50" id="ingredientes_S" name="ingredientes_S" placeholder="Ejemplo: Pollo, Arroz, Leche">
                     <button type="submit" class="btn btn-primary ">Buscar</button>
                 </div>
             </form>
 
             <!-- Sección "Recetas Filtradas" -->
-            <div class="row mt-5 pt-4">
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title fs-4">Receta 1</h5>
-                            <hr>
-                            <p class="card-text">Ingredientes </p>
-                            <a href="#" class="btn btn-sm btn-success">Ver Receta</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title fs-4">Receta 2</h5>
-                            <hr>
-                            <p class="card-text">Descripción de la receta 2</p>
-                            <a href="#" class="btn btn-sm btn-success">Ver Receta</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title fs-4">Receta 3</h5>
-                            <hr>
-                            <p class="card-text">Descripción de la receta 3</p>
-                            <a href="#" class="btn btn-sm btn-success">Ver Receta</a>
-                        </div>
-                    </div>
-                </div>
-                    
-
+            <div class="row mt-5 pt-4" id="recetas-container">
+            
             </div>
 
         </div>
     </section>
 
-    <section class="col-lg-5 mt-5 ">
+    <section class="col-lg-5 mt-5">
         <!-- Sección "ChatBot Recetas" -->
         <h2 class="chatbot-title">¿Qué se te antoja hoy?</h2>
         <div class="card">
@@ -95,6 +64,24 @@
         </div>
     </div>
 
+
+    <div class="modal fade" id="recetaModal" tabindex="-1" aria-labelledby="recetaModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="recetaModalLabel">Procedimiento de la Receta</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p id="recetaProcedimiento"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+      </div>
+
 {% endblock %}
 
 {% block links %}
@@ -110,6 +97,7 @@
             background-color: rgba(205, 185, 185, 0.427);
         }
 
+
         .chatbot-title {
             font-size: 1.5rem;
             font-weight: bold;
@@ -121,7 +109,7 @@
 
         
         #chatBox {
-            max-height: 55vh;
+            height: 55vh;
             overflow-y: auto;
             background-color: #f3f3f3;
         }

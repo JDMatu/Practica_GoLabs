@@ -3,7 +3,7 @@ from flask import Flask, render_template, request, redirect, url_for, jsonify
 #Cargar la funcion que carga los documentos en la base de vectores
 from load_docs import generate_data_store
 from init_langchain import chat
-from controlador_recetas import get_recipes
+from controlador_recetas import get_recipes, get_recipes_by_Ingredients
 
 
 # Inicializar la aplicación Flask
@@ -44,6 +44,22 @@ def upload_file():
         file.save('static/data/' + file.filename)
         generate_data_store()
         return redirect(url_for('index'))
+    
+
+@app.route('/buscar_recetas', methods=['POST'])
+def buscar_recetas():
+    print("Buscando")
+    data = request.get_json()
+    ingredientes = data.get('ingredientes', [])
+    
+    # Buscar recetas en la base de datos
+    recetas = get_recipes_by_Ingredients(ingredientes)
+    print(recetas)
+    
+    if recetas:
+        return jsonify({"status": "success", "recetas": recetas})
+    else:
+        return jsonify({"status": "no_recipes_found", "recetas": []})
 
     
 

@@ -47,20 +47,28 @@ Answer the question based on the above context: {question}
 If you don't know the answer, you can say "I don't know."
 """
 
-
+memory = []
 def chat(question):
-
+    global memory
     PROMPT_TEMPLATE1 = """
-        Answer the question based only on the following context:
+        Hi there! I'm your culinary assistant, always ready to help you in the kitchen. 
+        Please use the following information to answer the question:
 
         {context}
 
         ---
+        Here's some context from our previous interactions:
+        {memory}
+        ---
+        Please respond to the question based on the information above: {question}
 
-        Answer the question based on the above context: {question}
-        If you don't know the answer, you can say "I don't know."
-        Always response in Spanish.
-        
+        ### Response Format:
+        - Provide a clear and concise answer based on the context.
+        - Offer any additional tips or related information if relevant.
+        - Do not include any headings or labels in the response.
+
+        Remember to answer in Spanish and be kind and friendly in your tone. 
+        If you don't know the answer, you can say "I don't know", but always with a smile.
     """
 
 
@@ -71,10 +79,10 @@ def chat(question):
     # Search the DB.
     results = db.similarity_search(question, k=3)
     
-
+    memory_text = "\n\n---\n\n".join(memory)
     context_text = "\n\n---\n\n".join([doc.page_content for doc in results])
     prompt_template = ChatPromptTemplate.from_template(PROMPT_TEMPLATE1)
-    prompt = prompt_template.format(context=context_text, question=question)
+    prompt = prompt_template.format(context=context_text, question=question, memory=memory_text)
     print(prompt)
 
     model = ChatGoogleGenerativeAI(
@@ -85,6 +93,7 @@ def chat(question):
         max_retries=2,
     )
     response_text = model.invoke(prompt)
+    memory.append(f"Pregunta: {question}\nRespuesta: {response_text.content}")
 
     """ sources = [doc.metadata.get("source", None) for doc in results]
     formatted_response = f"{response_text.content}\nSources: {sources}"

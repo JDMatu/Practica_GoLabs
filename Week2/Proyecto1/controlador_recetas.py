@@ -61,3 +61,23 @@ def get_recipes():
     conexion.close()
     return recetas
     
+def get_recipes_by_Ingredients(ingredientes):
+    conexion = obtener_conexion()
+    cursor = conexion.cursor()
+    ingredientes_str = '%' + '%'.join(ingredientes) + '%'
+    
+    cursor.execute('''
+        SELECT * FROM recetas 
+        WHERE ingredientes LIKE ?
+    ''', (ingredientes_str,))
+    
+    recetas = cursor.fetchall()
+    
+    # Usar un conjunto para evitar duplicados
+    receta_vistas = set()
+    for receta in recetas:
+        if receta not in receta_vistas:
+            receta_vistas.add(receta)
+    
+    conexion.close()
+    return list(receta_vistas)
