@@ -7,14 +7,22 @@ import getpass
 import os
 import shutil
 from dotenv import load_dotenv
+<<<<<<< HEAD
 import sqlite3
 import re
+=======
+import re
+import controlador_recetas
+>>>>>>> fcd2359c054239ce14c8c099ae669ec14007c636
 
 # Load the environment variables
 load_dotenv()
 
+<<<<<<< HEAD
 # Variable para almacenar nombres de recetas
 recipe_names = []
+=======
+>>>>>>> fcd2359c054239ce14c8c099ae669ec14007c636
 
 # Set the Google API key
 if "GOOGLE_API_KEY" not in os.environ:
@@ -24,6 +32,7 @@ CHROMA_PATH = "chroma"
 DATA_PATH = "static/data"
 
 
+<<<<<<< HEAD
 # Configurar base de datos SQLite
 def create_db():
     conn = sqlite3.connect('recetas.db')
@@ -45,6 +54,8 @@ def save_recipe_to_db(cursor, nombre, ingredientes, procedimiento):
         INSERT INTO recetas (nombre, ingredientes, procedimiento)
         VALUES (?, ?, ?)
     ''', (nombre, ingredientes, procedimiento))
+=======
+>>>>>>> fcd2359c054239ce14c8c099ae669ec14007c636
 
 
 def extract_recipes(full_text):
@@ -72,19 +83,29 @@ def extract_recipes(full_text):
     return recipes
 
 
+<<<<<<< HEAD
 
 
 def generate_data_store():
     try:
         conn, cursor = create_db()
+=======
+def generate_data_store():
+    try:
+>>>>>>> fcd2359c054239ce14c8c099ae669ec14007c636
         documents = load_documents()
         if not documents:
             print("No documents loaded.")
             return
+<<<<<<< HEAD
         chunks = split_text(documents,cursor)
         save_to_chroma(chunks)
         conn.commit()  # Guardar cambios en la base de datos
         conn.close()   # Cerrar conexión
+=======
+        chunks = split_text(documents)
+        save_to_chroma(chunks)
+>>>>>>> fcd2359c054239ce14c8c099ae669ec14007c636
     except Exception as e:
         print(f"Error during data store generation: {e}")
 
@@ -93,13 +114,20 @@ def load_documents():
         loader = PyPDFDirectoryLoader(DATA_PATH)
         documents = loader.load()
         print(f"Loaded {len(documents)} documents from {DATA_PATH}.")
+<<<<<<< HEAD
 
+=======
+>>>>>>> fcd2359c054239ce14c8c099ae669ec14007c636
         return documents
     except Exception as e:
         print(f"Error loading documents: {e}")
         return []
 
+<<<<<<< HEAD
 def split_text(documents: list[Document], cursor):
+=======
+def split_text(documents: list[Document]):
+>>>>>>> fcd2359c054239ce14c8c099ae669ec14007c636
     text_splitter = RecursiveCharacterTextSplitter(
         chunk_size=700,
         chunk_overlap=200,
@@ -109,6 +137,7 @@ def split_text(documents: list[Document], cursor):
     )
     chunks = text_splitter.split_documents(documents)
 
+<<<<<<< HEAD
     # Imprimir detalles del primer chunk
     print(f"Split {len(documents)} documents into {len(chunks)} chunks.")
     """ for i, chunk in enumerate(chunks):
@@ -122,11 +151,21 @@ def split_text(documents: list[Document], cursor):
 
     print(f"Full text length: {len(full_text)}")
     print("----------------------------------------------------------------------------------------")
+=======
+    full_text = ""
+    for doc in documents:
+        full_text += doc.page_content + "\n\n"
+
+>>>>>>> fcd2359c054239ce14c8c099ae669ec14007c636
 
     # Extraer y guardar información de múltiples recetas
     recipes = extract_recipes(full_text)
 
     for recipe in recipes:
+<<<<<<< HEAD
+=======
+        name = recipe['name'].split('.')[1].strip()
+>>>>>>> fcd2359c054239ce14c8c099ae669ec14007c636
         ingredients = ""
         for ingredient in recipe['ingredients']:
             ingredients += f"{ingredient}\n"
@@ -135,10 +174,15 @@ def split_text(documents: list[Document], cursor):
         for step in recipe['procedure']:
             procedimiento += f"{step}\n"
         procedimiento = procedimiento.strip()
+<<<<<<< HEAD
         
         
        #save_recipe_to_db(cursor, recipe['name'], ingredients, procedimiento)
         #recipe_names.append(recipe['name'])  # Guardar nombre en la lista
+=======
+
+        controlador_recetas.save_recipe(name, ingredients, procedimiento)
+>>>>>>> fcd2359c054239ce14c8c099ae669ec14007c636
 
 
     return chunks
@@ -158,6 +202,7 @@ def save_to_chroma(chunks: list[Document]):
     print(f"Saved {len(chunks)} chunks to {CHROMA_PATH}.")
 
 
+<<<<<<< HEAD
 generate_data_store()
 
 
@@ -176,3 +221,6 @@ def query_recipes_from_db():
 
 
 query_recipes_from_db()
+=======
+controlador_recetas.query_NAME_recipes()
+>>>>>>> fcd2359c054239ce14c8c099ae669ec14007c636

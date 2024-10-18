@@ -15,6 +15,7 @@ ipython_config.py
 
 #Database Chroma
 chroma
+recetas.db
 
 
 .DS_Store
