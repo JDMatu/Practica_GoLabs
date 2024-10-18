@@ -1,31 +1,22 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify
-<<<<<<< HEAD
+
 from init_langchain import main
-=======
+
 
 #Cargar la funcion que carga los documentos en la base de vectores
-from load_docs import generate_data_store
+from load_docs import generate_data_store, generate_data
 from init_langchain import chat
 from controlador_recetas import get_recipes, get_recipes_by_Ingredients
 
 
->>>>>>> fcd2359c054239ce14c8c099ae669ec14007c636
 # Inicializar la aplicación Flask
 app = Flask(__name__)
 
 
 # Definir la ruta principal
-@app.route('/',methods=['GET', 'POST'])
+@app.route('/')
 def index():
-    query = None
-    response = None
-
-    if request.method == 'POST':
-        query = request.form['query']
-        response = main(query)  # Llama a la función que genera la respuesta del bot
-
-    return render_template('index.html', query=query, response=response)
-   
+    return render_template('index.html')
 
 
 @app.route('/add_receta')
@@ -54,7 +45,8 @@ def upload_file():
     if request.method == 'POST':
         file = request.files['file']
         file.save('static/data/' + file.filename)
-        generate_data_store()
+        url = f"static/data/{file.filename}"
+        generate_data(url)
         return redirect(url_for('index'))
     
 
