@@ -1,51 +1,76 @@
-from load_docs import documents
-from langchain_google_genai import GoogleGenerativeAIEmbeddings,ChatGoogleGenerativeAI
-from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain_community.vectorstores import Chroma
-from langchain.chains.retrieval import create_retrieval_chain
-from langchain.chains.combine_documents import create_stuff_documents_chain
-from langchain_core.prompts import ChatPromptTemplate
+# from dataclasses import dataclass
+from langchain_chroma import Chroma
+from langchain_google_genai import ChatGoogleGenerativeAI, GoogleGenerativeAIEmbeddings
+from langchain.prompts import ChatPromptTemplate
+import getpass
 import os
 from dotenv import load_dotenv
 
-#Cargando la API de Google
+# Load the environment variables
 load_dotenv()
-API = os.getenv("GOOGLE_API_KEY")
 
-#Dividiendo los documentos
-text_splitter = RecursiveCharacterTextSplitter(
-    chunk_size=500,
-    chunk_overlap=0,
-    length_function=len
+# Set the Google API key
+if "GOOGLE_API_KEY" not in os.environ:
+    os.environ["GOOGLE_API_KEY"] = getpass.getpass("Enter your Google AI API key: ")
+
+
+CHROMA_PATH = "chroma"
+
+PROMPT_TEMPLATE = """
+Hi there! I'm your culinary assistant, always ready to help you in the kitchen. 
+Please use the following information to answer the question:
+
+{context}
+
+---
+Here's some context from our previous interactions:
+{memory}
+---
+Please respond to the question based on the information above: {question}
+
+### Response Format:
+- Provide a clear and concise answer based on the context.
+- Offer any additional tips or related information if relevant.
+- Do not include any headings or labels in the response.
+
+Remember to answer in Spanish and be kind and friendly in your tone. 
+If you don't know the answer, you can say "I don't know", but always with a smile.
+"""
+
+memory = []
+def main(query:str):
+    # Create CLI.
+    global memory
+    query_text = query
+
+    # Prepare the DB.
+    embedding_function = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
+    db = Chroma(collection_name="Recetas",persist_directory=CHROMA_PATH, embedding_function=embedding_function)
+    
+    # Search the DB.
+    
+    results = db.similarity_search(query_text, k=29)
+    
+    
+    memory_text = "\n\n---\n\n".join(memory)
+    context_text = "\n\n---\n\n".join([doc.page_content for doc in results])
+    prompt_template = ChatPromptTemplate.from_template(PROMPT_TEMPLATE)
+    prompt = prompt_template.format(context=context_text, question=query_text, memory=memory_text)
+
+    model = ChatGoogleGenerativeAI(
+    model="gemini-1.5-flash",
+    temperature=0,
+    max_tokens=None,
+    timeout=None,
+    max_retries=2,
 )
-texts = text_splitter.split_documents(documents)
+    response_text = model.invoke(prompt)
+    memory.append(f"Pregunta: {query_text}\nRespuesta: {response_text.content}")
 
-#creando el vectorstore
-vectorstore = Chroma.from_documents(documents=texts, embedding=GoogleGenerativeAIEmbeddings(model="models/embedding-001"))
-retriever = vectorstore.as_retriever(search_type="similarity", search_kwargs={"k": 5})
+    
+    formatted_response = f"{response_text.content}"
+    return formatted_response
 
-#Configurando el asistente
-llm = ChatGoogleGenerativeAI(model="gemini-1.5-flash", temperature=0)
 
-system_promt= (
-    "Eres un asistente experto en responder preguntas sobre recetas de comida o cocina. "
-    "Usa la información de contexto que te proporciono para responder a la pregunta. "
-    "Si no sabes la respuesta, di 'No lo sé'. "
-    "Intenta ser conciso.\n\n"
-    "{context}"
-)
-
-promt = ChatPromptTemplate.from_template(
-    "Eres un asistente experto en la area de cocina. Usa el contexto proporcionado para responder la pregunta.\n"
-    "{context}\nPregunta: {input}\n"
-)
-
-while True:
-    query = input("Soy tu asistente de cocina en que puedo ayudarte: ")
-    if query.lower() == "salir":
-        break
-    else:
-        question_answer_chain = create_stuff_documents_chain(llm, promt)
-        rag_chain = create_retrieval_chain(retriever, question_answer_chain)
-        response = rag_chain.invoke({"input": query})
-        print(response["answer"])
+if __name__ == "__main__":
+    main()
