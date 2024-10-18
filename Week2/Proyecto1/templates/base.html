@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Asistente de Cocina que te ayudará a encontrar recetas según tus ingredientes o responder preguntas culinarias.">
+    <title>Asistente de Cocina</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</head>
+<body>
+
+    <header class="bg-light py-5" style="background-image: url('/static/img/home.webp');">
+        <nav class="container navbar navbar-light pt-3">
+          <div class="container-fluid">
+              <h1>
+                <a href="{{url_for('index')}}" class="logo"><i class="bi bi-egg-fried" alt="home"></i>Asistente</a>
+              </h1>
+                <ul class="d-flex gap-5 align-items-center">
+                  <a href="{{url_for('index')}}" class=""><i class="bi bi-egg-fried" alt="home"></i></a>
+                  <li><a href="{{url_for('recetas')}}">Mi recetario</a></li>
+                  <li><a href="{{url_for('add_receta')}}">Nueva Receta</a></li>
+                </ul>
+              
+          </nav>
+    </header>
+
+    <main class="row d-flex justify-content-around">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <style>
+
+      body{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Roboto', sans-serif;
+        background-color: rgba(230, 210, 187, 0.702);
+      }
+
+      .navbar ul li{
+        list-style: none;
+      }
+
+      .navbar ul i{
+        font-size: 2rem;
+        color: aquamarine;
+      }
+
+      .navbar ul li a{
+        color:aquamarine;
+        text-decoration: none;
+        font-size: 24px;
+      }
+
+      .navbar ul li a:hover{
+        color: rgb(32, 220, 157);
+      }
+
+      .logo{
+        color: aquamarine;
+        font-size: 3rem;
+        text-decoration: none;
+        display: flex;
+        gap: 20px;
+      }
+
+    </style>
+
+    {% block links %}
+    {% endblock %}
+
+    
+</body>
+</html>
