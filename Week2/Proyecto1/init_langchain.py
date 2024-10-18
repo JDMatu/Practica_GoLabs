@@ -163,4 +163,3 @@ def main():
     # Pregunta sobre el número de recetas en la base de datos (SQL)
     question = "¿Cuántas recetas hay en total?"
     agent_executor.invoke({"input": question})
-

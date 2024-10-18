@@ -1,3 +1,18 @@
+<<<<<<< HEAD
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Asistente de Cocina es una aplicación web que te ayudará a encontrar recetas de cocina de manera rápida y sencilla.">
+    <title>Asistente de Culinario</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            <h1>Asistente de Culinario</h1>
+            <p>¡Pregunta sobre recetas y te responderé!</p>
+=======
 {% extends 'base.html' %}
 {% block content %}
     <div class="upload">
@@ -41,9 +56,42 @@
                     <button class="btn btn-primary" type="submit">Enviar</button>
                 </div>
             </form>
+>>>>>>> fcd2359c054239ce14c8c099ae669ec14007c636
         </div>
 
+        <!-- Chat Box -->
+        <div class="chat-box" id="chat-box">
+            <!-- User message -->
+            {% if query %}
+                <div class="message user">
+                    <strong>Tú:</strong> {{ query }}
+                </div>
+            {% endif %}
 
+<<<<<<< HEAD
+            <!-- Bot response -->
+            {% if response %}
+                <div class="message bot">
+                    <strong>Asistente:</strong><br>
+                    {{ response }}
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- User Input -->
+        <form class="user-input" method="POST" action="/">
+            <input type="text" placeholder="Escribe tu pregunta aquí..." name="query" required>
+            <button type="submit">Enviar</button>
+        </form>
+    </div>
+
+    <script>
+        // Scroll to bottom of chat box
+        const chatBox = document.getElementById('chat-box');
+        chatBox.scrollTop = chatBox.scrollHeight;
+    </script>
+</body>
+=======
     </section>
 
     <!-- Modal de subida de archivos -->
@@ -148,3 +196,4 @@
     <script src="{{url_for('static', filename='js/funciones.js')}}"></script>
 {% endblock %}
 
+>>>>>>> fcd2359c054239ce14c8c099ae669ec14007c636

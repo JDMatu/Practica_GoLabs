@@ -3,6 +3,7 @@ from langchain_community.document_loaders import PyPDFDirectoryLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_chroma import Chroma
+from langchain_community.document_loaders import PyPDFLoader
 import getpass
 import os
 import shutil
@@ -107,16 +108,35 @@ def split_text(documents: list[Document]):
 
 
 def save_to_chroma(chunks: list[Document]):
-    # Clear out the database first.
-    if os.path.exists(CHROMA_PATH):
-        shutil.rmtree(CHROMA_PATH)
+    
+    
+    db = Chroma(collection_name="Recetas",embedding_function=GoogleGenerativeAIEmbeddings(model="models/embedding-001"), persist_directory=CHROMA_PATH)
 
-    # Create a new DB from the documents.
-    db = Chroma(
-        collection_name="Recetas",embedding_function=GoogleGenerativeAIEmbeddings(model="models/embedding-001"), persist_directory=CHROMA_PATH
-    )
+    
+    
     db.add_documents(chunks)
     print(f"Saved {len(chunks)} chunks to {CHROMA_PATH}.")
 
 
-controlador_recetas.query_NAME_recipes()
+def loader_file(url):
+    try:
+        loader = PyPDFLoader(url)
+        file = loader.load()
+        print(f"Loaded {len(file)} documents from {url}.")
+        return file
+    except Exception as e:
+        print(f"Error loading documents: {e}")
+        return []
+
+
+def generate_data(url):
+    try:
+        documents = loader_file(url)
+        if not documents:
+            print("No documents loaded.")
+            return
+        chunks = split_text(documents)
+        save_to_chroma(chunks)
+        print("se cargo exitosamente")
+    except Exception as e:
+        print(f"Error during data store generation: {e}")   

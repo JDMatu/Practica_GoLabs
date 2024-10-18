@@ -1,7 +1,10 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 
+from init_langchain import main
+
+
 #Cargar la funcion que carga los documentos en la base de vectores
-from load_docs import generate_data_store
+from load_docs import generate_data_store, generate_data
 from init_langchain import chat
 from controlador_recetas import get_recipes, get_recipes_by_Ingredients
 
@@ -42,7 +45,8 @@ def upload_file():
     if request.method == 'POST':
         file = request.files['file']
         file.save('static/data/' + file.filename)
-        generate_data_store()
+        url = f"static/data/{file.filename}"
+        generate_data(url)
         return redirect(url_for('index'))
     
 
