@@ -67,8 +67,11 @@ body {
 
 /* Estilo mi Recetario  */
 .mis-recetas {
-    margin-top: 10px; /* Ajuste del margen superior */
-   
+    margin-top: 30%; /* Ajuste del margen superior */
+    max-height: calc(100vh - (altura del navbar + margen inferior)); /* Ajusta el valor según tu navbar */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
 }
 
 .recipe-card-title { 
@@ -78,9 +81,13 @@ body {
 .recipe-card {
     border: 1px solid black; /* Añadir borde a la tarjeta */
     padding: 15px; /* Añadir padding dentro de la tarjeta */
-    margin-bottom: 10px; /* Añadir espacio entre tarjetas */
+    margin-bottom: 20px; /* Añadir espacio entre tarjetas */
     background-color: #f9f9f9; /* Fondo más suave para la tarjeta */
-
+    background-size:cover ;
+    flex: 1 1 calc(25% - 20px); /* Ocupa el 25% del ancho con espacio entre ellas */
+    margin: 10px; /* Espacio alrededor de las tarjetas */
+    max-width: 300px; /* Asegurarse de que no se exceda el ancho */
+    box-sizing: border-box; /* Incluir padding y borde en el ancho */
 }
 
 .recipe-card-body {
